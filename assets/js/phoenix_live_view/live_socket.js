@@ -663,6 +663,7 @@ export default class LiveSocket {
   }
 
   dispatchClickAway(e, clickStartedAt){
+    console.log("inside dispatchClickAway")
     let phxClickAway = this.binding("click-away")
     DOM.all(document, `[${phxClickAway}]`, el => {
       if(!(el.isSameNode(clickStartedAt) || el.contains(clickStartedAt))){
@@ -720,7 +721,9 @@ export default class LiveSocket {
 
       this.requestDOMUpdate(() => {
         if(type === "patch"){
+          let clickStartedAtTarget = this.clickStartedAtTarget || e.target
           this.pushHistoryPatch(href, linkState, target)
+          this.dispatchClickAway(e, clickStartedAtTarget)
         } else if(type === "redirect"){
           this.historyRedirect(href, linkState)
         } else {
